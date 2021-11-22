@@ -19,7 +19,7 @@
             <p>Brands</p>
             @foreach ($brands as $brand)
                 <label class="m-checkbox">
-                    <input name="brand" type="checkbox" value="{{ $brand->id }}" @if (in_array($brand->id,
+                    <input name="brand" type="checkbox" class="checkSingle" value="{{ $brand->id }}" @if (in_array($brand->id,
                     explode(',', request()->input('filter.brand'))))
                     checked
             @endif
@@ -31,7 +31,7 @@
             <p>Categories</p>
             @foreach ($categories as $category)
                 <label>
-                    <input name="category" type="checkbox" value="{{ $category->id }}" @if (in_array($category->id,
+                    <input name="category" type="checkbox" class="checkSingle" value="{{ $category->id }}" @if (in_array($category->id,
                     explode(',', request()->input('filter.category'))))
                     checked
             @endif
@@ -43,7 +43,7 @@
             <p>Tags</p>
             @foreach ($tags as $tag)
                 <label>
-                    <input name="tag" type="checkbox" value="{{ $tag->id }}" @if (in_array($tag->id, explode(',',
+                    <input name="tag" type="checkbox" class="checkSingle" value="{{ $tag->id }}" @if (in_array($tag->id, explode(',',
                     request()->input('filter.tag'))))
                     checked
             @endif
@@ -53,6 +53,11 @@
             @endforeach
 
             <button type="button" id="filter">Filter</button>
+<br>
+<br>
+<br>
+             <label> <input type="checkbox" name="checkedAll" id="checkedAll"
+                                                class="mr-2" />Check all </label>
         </div>
         <div class="col-sm-8">
             @foreach ($posts as $post)
@@ -106,7 +111,38 @@
 
         document.getElementById("filter").addEventListener("click", filterResults);
     </script>
+    <script>
 
+
+
+          $(document).ready(function() {
+            $("#checkedAll").change(function() {
+                if (this.checked) {
+                    $(".checkSingle").each(function() {
+                        this.checked = true;
+                    })
+                } else {
+                    $(".checkSingle").each(function() {
+                        this.checked = false;
+                    })
+                }
+            });
+            $(".checkSingle").click(function() {
+                if ($(this).is(":checked")) {
+                    var isAllChecked = 0;
+                    $(".checkSingle").each(function() {
+                        if (!this.checked)
+                            isAllChecked = 1;
+                    })
+                    if (isAllChecked == 0) {
+                        $("#checkedAll").prop("checked", true);
+                    }
+                } else {
+                    $("#checkedAll").prop("checked", false);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
