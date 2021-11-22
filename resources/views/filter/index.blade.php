@@ -15,9 +15,12 @@
 <body>
 
     <div class="row">
-        <div class="col-sm-4">
-            <p>Brands</p>
+        <div class="col-sm-4 ">
+            <div class="ml-3">
+                <p>Brands</p>
+            <ul>
             @foreach ($brands as $brand)
+            <li class="">
                 <label class="m-checkbox">
                     <input name="brand" type="checkbox" class="checkSingle" value="{{ $brand->id }}" @if (in_array($brand->id,
                     explode(',', request()->input('filter.brand'))))
@@ -26,10 +29,14 @@
             >
             {{ $brand->name }}
             </label>
+            </li>
             @endforeach
+            </ul>
 
             <p>Categories</p>
+            <ul>
             @foreach ($categories as $category)
+                <li>
                 <label>
                     <input name="category" type="checkbox" class="checkSingle" value="{{ $category->id }}" @if (in_array($category->id,
                     explode(',', request()->input('filter.category'))))
@@ -38,10 +45,14 @@
             >
             {{ $category->name }}
             </label>
+                </li>
             @endforeach
+            </ul>
 
             <p>Tags</p>
+                <ul>
             @foreach ($tags as $tag)
+            <li>
                 <label>
                     <input name="tag" type="checkbox" class="checkSingle" value="{{ $tag->id }}" @if (in_array($tag->id, explode(',',
                     request()->input('filter.tag'))))
@@ -50,19 +61,24 @@
             >
             {{ $tag->name }}
             </label>
+            </li>
             @endforeach
 
+                </ul>
             <button type="button" id="filter">Filter</button>
-<br>
-<br>
-<br>
+            <br>
+            <br>
+            <br>
+
              <label> <input type="checkbox" name="checkedAll" id="checkedAll"
                                                 class="mr-2" />Check all </label>
+            </div>
         </div>
         <div class="col-sm-8">
             @foreach ($posts as $post)
                 <span class="badge badge-danger">{{ $post->name }}</span>
             @endforeach
+            {{ $posts->links() }}
         </div>
     </div>
 

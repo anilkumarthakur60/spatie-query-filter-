@@ -30,8 +30,9 @@ class PostController extends Controller
                 AllowedFilter::exact('brand', 'brand_id'),
                 AllowedFilter::exact('category', 'category_id'),
                 AllowedFilter::exact('tag', 'tag_id')
-            ])
-            ->get();
+            ])->paginate(100)
+            ->appends(request()->query());
+
         $tags = Tag::all();
 
         return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
