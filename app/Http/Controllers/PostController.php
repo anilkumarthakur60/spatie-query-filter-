@@ -25,12 +25,14 @@ class PostController extends Controller
 
         $brands = Brand::all();
 
-        $posts = QueryBuilder::for(Post::class)
+        $posts = QueryBuilder::for(Post::class)->whereHas('user')
             ->allowedFilters([
                 AllowedFilter::exact('brand', 'brand_id'),
                 AllowedFilter::exact('category', 'category_id'),
                 AllowedFilter::exact('tag', 'tag_id')
-            ])->paginate(100)
+            ])
+            ->allowedSorts('name')
+            ->paginate(100)
             ->appends(request()->query());
 
         $tags = Tag::all();
