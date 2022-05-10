@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('subcategory_id')->constrained('subcategories')->cascadeOnDelete();
             $table->foreignId('tag_id')->constrained('tags')->cascadeOnDelete();
             $table->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('brands')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }

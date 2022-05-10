@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FrontendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('subcategories', [FrontendController::class, 'subcategories']);
+Route::get('posts', [FrontendController::class, 'posts']);
+Route::get('tags', [FrontendController::class, 'tags']);
+Route::get('users', [FrontendController::class, 'users']);
+Route::get('brands', [FrontendController::class, 'brands']);

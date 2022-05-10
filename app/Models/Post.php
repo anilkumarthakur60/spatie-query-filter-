@@ -42,4 +42,25 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeWithFilters(
+        $query,
+        $subcategories,
+        $tags,
+        $users,
+        $brands,
+    ) {
+        return $query->when(count($subcategories), function ($query) use ($subcategories) {
+            $query->whereIn('subcategory_id', $subcategories);
+        })
+            ->when(count($tags), function ($query) use ($tags) {
+                $query->whereIn('tag_id', $tags);
+            })
+            ->when(count($brands), function ($query) use ($brands) {
+                $query->whereIn('brand_id', $brands);
+            })
+            ->when(count($users), function ($query) use ($users) {
+                $query->whereIn('brand_id', $users);
+            });
+    }
 }
