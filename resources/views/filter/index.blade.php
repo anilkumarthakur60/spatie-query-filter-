@@ -18,67 +18,70 @@
         <div class="col-sm-4 ">
             <div class="ml-3">
                 <p>Brands</p>
-            <ul>
-            @foreach ($brands as $brand)
-            <li class="">
-                <label class="m-checkbox">
-                    <input name="brand" type="checkbox" class="checkSingle" value="{{ $brand->id }}" @if (in_array($brand->id,
-                    explode(',', request()->input('filter.brand'))))
-                    checked
-            @endif
-            >
-            {{ $brand->name }}
-            </label>
-            </li>
-            @endforeach
-            </ul>
-
-            <p>Categories</p>
-            <ul>
-            @foreach ($categories as $category)
-                <li>
-                <label>
-                    <input name="category" type="checkbox" class="checkSingle" value="{{ $category->id }}" @if (in_array($category->id,
-                    explode(',', request()->input('filter.category'))))
-                    checked
-            @endif
-            >
-            {{ $category->name }}
-            </label>
-                </li>
-            @endforeach
-            </ul>
-
-            <p>Tags</p>
                 <ul>
-            @foreach ($tags as $tag)
-            <li>
-                <label>
-                    <input name="tag" type="checkbox" class="checkSingle" value="{{ $tag->id }}" @if (in_array($tag->id, explode(',',
-                    request()->input('filter.tag'))))
-                    checked
-            @endif
-            >
-            {{ $tag->name }}
-            </label>
-            </li>
-            @endforeach
+                    @foreach ($brands as $brand)
+                    <li class="">
+                        <label class="m-checkbox">
+                            <input name="brand" type="checkbox" onchange="hello();" class="checkSingle"
+                                value="{{ $brand->slug }}" @if(in_array($brand->slug,
+                            explode(',', request()->input('filter.brand'))))
+                            checked
+                            @endif
+                            >
+                            {{ $brand->name }}
+                        </label>
+                    </li>
+                    @endforeach
+                </ul>
+
+                <p>Categories</p>
+                <ul>
+                    @foreach ($categories as $category)
+                    <li>
+                        <label>
+                            <input name="category" type="checkbox" onchange="hello();" class="checkSingle"
+                                value="{{ $category->slug }}" @if(in_array($category->slug,
+                            explode(',', request()->input('filter.category'))))
+                            checked
+                            @endif
+                            >
+                            {{ $category->name }}
+                        </label>
+                    </li>
+                    @endforeach
+                </ul>
+
+                <p>Tags</p>
+                <ul>
+                    @foreach ($tags as $tag)
+                    <li>
+                        <label>
+                            <input name="tag" type="checkbox" onchange="hello();" class="checkSingle"
+                                value="{{ $tag->slug}}" @if(in_array($tag->slug, explode(',',
+                            request()->input('filter.tag'))))
+                            checked
+                            @endif
+                            >
+                            {{ $tag->name }}
+                        </label>
+                    </li>
+                    @endforeach
 
                 </ul>
-            <button type="button" id="filter">Filter</button>
-            <br>
-            <br>
-            <br>
+                <button type="button" id="filter">Filter</button>
+                <br>
+                <br>
+                <br>
 
-             <label> <input type="checkbox" name="checkedAll" id="checkedAll"
-                                                class="mr-2" />Check all </label>
+                <label> <input type="checkbox" name="checkedAll" id="checkedAll" class="mr-2" />Check all </label>
             </div>
         </div>
         <div class="col-sm-8">
             @foreach ($posts as $post)
-                <span class="badge badge-danger">{{ $post->name }}</span>
+            <span class="badge badge-danger">{{ $post->name }}</span>
             @endforeach
-            {{ $posts->links() }}
+            {{-- {{ $posts->links() }} --}}
+            <h4> {{ $posts->count() }}</h4>
         </div>
     </div>
 
@@ -95,12 +98,20 @@
     </script>
 
     <script>
+        $('checkSingle').on('change', function() {
+       
+            alert('jiugh');
+        });
         function getIds(checkboxName) {
             let checkBoxes = document.getElementsByName(checkboxName);
             let ids = Array.prototype.slice.call(checkBoxes)
                 .filter(ch => ch.checked == true)
                 .map(ch => ch.value);
             return ids;
+        }
+
+        function hello(){
+            $('#filter').click();
         }
 
         function filterResults() {
@@ -128,10 +139,7 @@
         document.getElementById("filter").addEventListener("click", filterResults);
     </script>
     <script>
-
-
-
-          $(document).ready(function() {
+        $(document).ready(function() {
             $("#checkedAll").change(function() {
                 if (this.checked) {
                     $(".checkSingle").each(function() {

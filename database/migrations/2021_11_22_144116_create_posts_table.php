@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->string('name');
             $table->text('content');
             $table->string('slug')->nullable();
-            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignId('subcategory_id')->constrained('subcategories')->cascadeOnDelete();
             $table->foreignId('tag_id')->constrained('tags')->cascadeOnDelete();
             $table->foreignId('brand_id')->constrained('brands')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('brands')->cascadeOnDelete();

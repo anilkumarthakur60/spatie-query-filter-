@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
         // Post::factory(10000)->create();
         $this->call(BrandSeeder::class);
         $this->call(CategorySeeder::class);
+        $this->call(SubcategorySeeder::class);
         $this->call(TagSeeder::class);
         $this->call(PostSeeder::class);
     }

@@ -22,8 +22,17 @@ class Category extends Model
         ];
     }
 
+    // public function posts()
+    // {
+    //     return $this->hasMany(Post::class);
+    // }
+
+    public function subcategories()
+    {
+        return $this->hasMany(Subcategory::class);
+    }
     public function posts()
     {
-        return $this->hasMany(Post::class);
+        return $this->hasManyThrough(Post::class, Subcategory::class);
     }
 }

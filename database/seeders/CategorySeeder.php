@@ -26,10 +26,9 @@ class CategorySeeder extends Seeder
             ];
         }
 
-        $chunks = array_chunk($data, 3);
 
-        foreach ($chunks as $chunk) {
-            Category::insert($chunk);
+        foreach ($data as $chunk) {
+            Category::create($chunk);
         }
     }
 }

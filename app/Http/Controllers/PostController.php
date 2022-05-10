@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\FiltersBlogs;
+use App\Filters\FiltersCategories;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -9,6 +11,9 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
+use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -27,13 +32,20 @@ class PostController extends Controller
 
         $posts = QueryBuilder::for(Post::class)->whereHas('user')
             ->allowedFilters([
-                AllowedFilter::exact('brand', 'brand_id'),
-                AllowedFilter::exact('category', 'category_id'),
-                AllowedFilter::exact('tag', 'tag_id')
+                AllowedFilter::exact('brand', 'brand.slug'),
+                AllowedFilter::exact('category', 'subcategory.category.slug'),
+                AllowedFilter::exact('tag', 'tag.slug')
             ])
             ->allowedSorts('name')
-            ->paginate(100)
-            ->appends(request()->query());
+            ->get();
+
+
+
+
+
+
+
+
 
         $tags = Tag::all();
 
@@ -64,23 +76,29 @@ class PostController extends Controller
         return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
         //
     }
-    public function filter()
+    public function filter(Request $request)
     {
         $categories = Category::all();
 
         $brands = Brand::all();
         $tags = Tag::all();
 
-        $posts = QueryBuilder::for(Product::class)
+        // $posts=Product
+
+
+        $posts = QueryBuilder::for(Post::class)
             ->allowedFilters([
-                AllowedFilter::exact('brand', 'brand_id'),
-                AllowedFilter::exact('category', 'category_id'),
+                // AllowedFilter::exact('brand', 'brand_id'),
+                // AllowedFilter::exact('category', 'category_id'),
                 AllowedFilter::exact('tag', 'tag_id'),
+                AllowedFilter::custom('category', new FiltersCategories),
+                AllowedFilter::custom('brand', new FiltersBlogs()),
             ])
+
             ->get();
 
 
-        return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
+        // return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
         //
     }
 
@@ -138,5 +156,36 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function uploadFile()
+    {
+        return view('post.upload_file');
+    }
+    public function uploadVideo(Request $request)
+    {
+        $receiver = new FileReceiver('file', $request, HandlerFactory::classFromRequest($request));
+
+        if (!$receiver->isUploaded()) {
+            // file not uploaded
+        }
+
+        $fileReceived = $receiver->receive();
+        if ($fileReceived->isFinished()) { // file uploading is complete / all chunks are uploaded
+            $file = $fileReceived->getFile(); // get file
+            $extension = $file->getClientOriginalExtension();
+            $fileName = str_replace('.' . $extension, '', $file->getClientOriginalName()); //file name without extenstion
+            $fileName .= '_' . md5(time()) . '.' . $extension; // a unique file name
+
+            $disk = Storage::disk(config('filesystems.public'));
+            $path = $disk->putFileAs('public', $file, $fileName);
+
+            // delete chunked file
+            unlink($file->getPathname());
+            return [
+                'path' => asset('storage/' . $path),
+                'filename' => $fileName
+            ];
+        }
     }
 }

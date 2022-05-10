@@ -16,11 +16,11 @@ class PostSeeder extends Seeder
         $user = User::create(['name' => 'anil thakur', 'email' => 'anilthakur@gmail.com', 'password' => bcrypt('password')]);
         $data = [];
 
-        for ($i = 0; $i < 100000; $i++) {
+        for ($i = 0; $i < 1000; $i++) {
             $data[] = [
                 'name' => $faker->sentence,
                 'content' => $faker->paragraph,
-                'category_id' => $faker->numberBetween(1, 10),
+                'subcategory_id' => $faker->numberBetween(1, 20),
                 'brand_id' => $faker->numberBetween(1, 10),
                 'tag_id' => $faker->numberBetween(1, 10),
                 'created_at' => now()->toDateTimeString(),

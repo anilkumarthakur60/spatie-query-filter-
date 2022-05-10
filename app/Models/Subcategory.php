@@ -2,17 +2,16 @@
 
 namespace App\Models;
 
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
 
-
-class Brand extends Model
+class Subcategory extends Model
 {
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = ['name', 'slug', 'category_id'];
     public function sluggable(): array
     {
         return [
@@ -25,5 +24,10 @@ class Brand extends Model
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

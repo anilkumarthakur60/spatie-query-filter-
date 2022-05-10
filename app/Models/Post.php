@@ -12,7 +12,7 @@ class Post extends Model
     use HasFactory;
     use Sluggable;
 
-    protected $fillable = ['name', 'slug', 'category_id', 'tag_id', 'brand_id'];
+    protected $fillable = ['name', 'slug', 'subcategory_id', 'tag_id', 'brand_id'];
     public function sluggable(): array
     {
         return [
@@ -23,9 +23,9 @@ class Post extends Model
     }
 
 
-    public function category()
+    public function subcategory()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Subcategory::class);
     }
 
     public function tag()

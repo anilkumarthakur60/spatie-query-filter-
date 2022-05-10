@@ -25,10 +25,10 @@ class BrandSeeder extends Seeder
             ];
         }
 
-        $chunks = array_chunk($data, 10);
+        // $chunks = array_chunk($data, 10);
 
-        foreach ($chunks as $chunk) {
-            Brand::insert($chunk);
+        foreach ($data as $chunk) {
+            Brand::create($chunk);
         }
     }
 }

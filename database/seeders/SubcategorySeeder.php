@@ -2,25 +2,27 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tag;
+use App\Models\Subcategory;
+use Faker\Generator;
 use Illuminate\Database\Seeder;
-use Faker\Generator as Faker;
 
-
-class TagSeeder extends Seeder
+class SubcategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run(Faker $faker)
+    public function run(Generator $faker)
     {
+
         $data = [];
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $data[] = [
                 'name' => $faker->name,
+
+                'category_id' => $faker->numberBetween(1, 10),
                 'created_at' => now()->toDateTimeString(),
                 'updated_at' => now()->toDateTimeString(),
             ];
@@ -28,7 +30,8 @@ class TagSeeder extends Seeder
 
 
         foreach ($data as $chunk) {
-            Tag::create($chunk);
+            Subcategory::create($chunk);
         }
+        //
     }
 }
