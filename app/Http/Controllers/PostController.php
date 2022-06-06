@@ -98,7 +98,7 @@ class PostController extends Controller
             ->get();
 
 
-        // return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
+        return view('filter.index', compact('posts', 'categories', 'tags', 'brands'));
         //
     }
 
